@@ -1,0 +1,53 @@
+# what to do in the simulation?
+ACTION rundynamics
+# Network dimension
+DIM 3
+
+MAXNNODE 500
+MAXNEDGE 250
+
+# Random generator seed (set to positive integer for reproducable results)
+RNGSEED -2
+
+# initial network structure
+USERANDOMFRAGMENTEDNETWORK T
+
+# stretch modulus
+ESTR 1D3
+MITOLEN 5D-1
+
+# bend energy prefactors
+BENDMOD1 2D0
+BENDMOD2 6D0
+
+# steric ENERGY parameters
+STERICMOD 1D4
+STERICRAD 1D-1
+GRIDSPACES 10 10 10
+USENODEGRID T
+USEEDGEGRID T
+USEGRID T
+ 
+# confinement in sphere of certain radius
+CONFSPHERE 5D0
+ECONF 1D4
+
+# fission rate (per node per time)
+FISSRATE 1D0
+FUSERATE1 1.500000000000000D3
+FUSERATE2 2.154434690031882D2
+CONTACTRAD 15D-2
+
+# number of dynamic steps to run and timestep
+BDSTEPS 200D4
+DELT 1D-4
+
+# save snapshots every so often
+SNAPSHOTS 1000 *.snap.out
+PRINTEVERY 10000
+# include brownian forces?
+DOBROWN T
+KT 1D0
+
+# more output for debugging
+VERBOSE F

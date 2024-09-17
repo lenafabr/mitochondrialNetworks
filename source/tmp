@@ -1,0 +1,2 @@
+gfortran -O3   -c mitonetworkutil.f90
+make: *** No rule to make target 'main.o', needed by 'default'.  Stop.

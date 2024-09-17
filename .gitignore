@@ -1,0 +1,12 @@
+*.o
+*.mod
+*.svg
+*.out
+*.exe
+*.aux
+*.bbl
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+
