@@ -4,7 +4,9 @@ FC = gfortran
 FLAGS = -O3
 DEBUGFLAGS = -ffast-math -funroll-loops
 #DEBUGFLAGS = -g -fbacktrace -ffpe-trap=zero,overflow,invalid -fcheck=all -fbounds-check -Wall -Wextra
-LIBS =  -lblas -llapack
+#LIBS =  -lblas -llapack
+LIBS =
+SDSCLIBS =
 
 OSGLIBS =  -lblas -llapack -lgfortran -lm
 OSGFLAGS = -static
@@ -24,6 +26,9 @@ EXE = ../dynnetwork.exe
 
 default: $(OBJS) main.o
 	$(FC) $(FLAGS) $(DEBUGFLAGS) $(OBJS) main.o -o $(EXE) $(LIBS)
+
+expanse: $(OBJS) main.o
+	$(FC) $(FLAGS) $(DEBUGFLAGS) $(OBJS) main.o -o $(EXE) $(SDSCLIBS)
 
 osg: $(OBJS) main.o
 	$(FC) $(FLAGS) $(OSGFLAGS) $(OBJS) main.o -o $(OSGEXE) $(OSGLIBS)
