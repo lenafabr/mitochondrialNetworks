@@ -110,6 +110,7 @@ SUBROUTINE READKEY
   DECAYRATE = -1D0
   FIXEDGES = .FALSE.
   UNIQUETRIGGERS = .FALSE.
+  SEEDCONCS = .FALSE.
 
   ! input/output
   USERANDOMFRAGMENTEDNETWORK = .FALSE.
@@ -350,6 +351,8 @@ SUBROUTINE READKEY
            CALL READI(NUMTRIGGERUNITS)
         CASE('FIXEDGES')
            CALL READO(FIXEDGES)
+        CASE('SEEDCONCS')
+           CALL READO(SEEDCONCS)
         CASE('UNIQUETRIGGERS')
            CALL READO(UNIQUETRIGGERS)
         CASE('RNGSEED')
@@ -358,11 +361,10 @@ SUBROUTINE READKEY
            CALL READA (SNAPSHOTFILE)
         CASE('REMODELINGFILE')
            CALL READA(REMODELINGFILE)
-        CASE('SNAPSHOTS')
-           DUMPSNAPSHOTS = .TRUE.
-           IF (NITEMS.GT.1) CALL READI(SNAPSHOTEVERY)
-           IF (NITEMS.GT.2) CALL READA(SNAPSHOTFILE)
-           IF (NITEMS.GT.3) CALL READO(APPENDSNAPSHOTS)
+        CASE('SNAPSHOTEVERY')
+           CALL READI(SNAPSHOTEVERY)
+        CASE('APPENDSNAPSHOTS')
+           CALL READO(APPENDSNAPSHOTS)
         CASE('STARTDIFFSTEP')
            CALL READI(STARTDIFFSTEP)
         CASE('STARTSNAPSTEP')
@@ -452,9 +454,7 @@ SUBROUTINE READKEY
   print*, '------------Parameter values : -------------------'
   print*, 'ACTION: ', TRIM(ADJUSTL(ACTION))
   print*, 'Output file: ', TRIM(OUTFILE)
-  IF (DUMPSNAPSHOTS) THEN
-     PRINT*, 'Dumping snapshot every', SNAPSHOTEVERY,'steps. In file:', TRIM(ADJUSTL(SNAPSHOTFILE))
-  ENDIF
+  PRINT*, 'Dumping snapshot every', SNAPSHOTEVERY,'steps. In file:', TRIM(ADJUSTL(SNAPSHOTFILE))
 
   print*, 'Max allowed number of nodes and edges:', MAXNNODE,MAXNEDGE
   PRINT*,"confined to sphere of size, conf strength",CELLRAD1,ECONF
@@ -465,7 +465,8 @@ SUBROUTINE READKEY
 
   PRINT*,'Starting diffusion at timestep, NUMBER OF DIFFUSING SPECIES, D COEFF:',STARTDIFFSTEP,NSPECIES,DIFF(1:NSPECIES)
   PRINT*,"number of substeps to take when doing FVM particle diffusion",NSUBSTEPS
-  PRINT*,'number of producing edges, Fix edges at constant concentration?',NUMTRIGGERUNITS,FIXEDGES
+  PRINT*,'number of producing edges, Fix edges at constant concentration? Start with initial nonzero concentration?', &
+  & NUMTRIGGERUNITS,FIXEDGES,SEEDCONCS
   PRINT*,'production rate of each species',PRODRATE
   PRINT*,'decay rates of each species:',DECAYRATE
   PRINT*,'Do Yeast Model? Confinement strength:',DOYEAST,YEASTCONF

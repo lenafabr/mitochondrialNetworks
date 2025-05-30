@@ -43,7 +43,8 @@ BDSTEPS 200D4
 DELT 1D-4
 
 # save snapshots every so often
-SNAPSHOTS 1000 *.snap.out
+SNAPSHOTFILE *.snap.out
+SNAPSHOTEVERY 1000
 PRINTEVERY 10000
 # include brownian forces?
 DOBROWN T

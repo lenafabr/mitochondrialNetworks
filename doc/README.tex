@@ -349,7 +349,8 @@ Floating point numbers can be formated as $1.0$, $1.1D0$, $10e-1$, $-1.0E+01$, e
 \item {\it SNAPSHOTFILE}
   \begin{itemize}
     \item  value: 1 string; default: *.snap.out
-    \item File for dumping out snapshots. Can also be specified within SNAPSHOTS keyword.
+    \item File for dumping out snapshots. 
+    \item Snapshot file contains multiple snapshots of network structure and other info. Should be read with \verb=parseDynNetworkSnapshots.m= script
   \end{itemize}
 %
 \item {\it REMODELINGFILE}
@@ -358,12 +359,10 @@ Floating point numbers can be formated as $1.0$, $1.1D0$, $10e-1$, $-1.0E+01$, e
     \item File for dumping out fission/fusion event records.
   \end{itemize}
 %
-\item {\it SNAPSHOTS}
+\item {\it APPENDSNAPSHOTS}
   \begin{itemize}
-    \item 1 optional integer, 1 optional string, 1 optional logical; defaults: 1, *.snap.out, false
-    \item Dump snapshots over the course of the calculation
-    \item integer: how often to dump snapshots; string: snapshot file (* is replaced with suffix); logical: append rather than rewriting the snapshot file
-    \item Snapshot file contains multiple snapshots of network structure and other info. Should be read with \verb=parseDynNetworkSnapshots.m= script
+    \item value: 1 logical; default: false
+    \item Whether to append rather than rewriting the snapshot file
   \end{itemize}
 %
 \item {\it STARTSNAPSTEP}
@@ -371,7 +370,14 @@ Floating point numbers can be formated as $1.0$, $1.1D0$, $10e-1$, $-1.0E+01$, e
     \item  value: 1 integer; default: 1
     \item Simulation step to begin saving snapshots
   \end{itemize}
+%
+\item {\it SNAPSHOTEVERY}
+  \begin{itemize}
+    \item  value: 1 integer; default: 1
+    \item Interval at which snapshots should be saved (in units of simulation steps).
+  \end{itemize}
 
+%
 \item {\it VERBOSE}
   \begin{itemize}
     \item  value: 1 logical; default: false
@@ -430,14 +436,14 @@ Floating point numbers can be formated as $1.0$, $1.1D0$, $10e-1$, $-1.0E+01$, e
 %
 \item {\it DIFF}
   \begin{itemize}
-    \item  value: NSPECIES floats ; default: 0.0
+    \item  value: 1 or NSPECIES floats ; default: 0.0
     \item Diffusion constant for each of the NSPECIES types of diffusing particles.
   \end{itemize}
 %
 \item {\it NSUBSTEPS}
   \begin{itemize}
     \item  value: 1 integer ; default: 0
-    \item The number of steps which should be taken during the diffusion calculation for each timestep used by the rest of the simulation. (i.e. value 10 means a timestep of DELT/10 will be used to perform the diffusion calculation)
+    \item The number of steps which should be taken during the diffusion calculation for each timestep used by the rest of the simulation. (i.e. value 10 means a timestep of DELT/10 will be used to perform the diffusion calculation). It is best to keep DIFF$\cdot$(DELT/NSUBSTEPS)/MITOLEN$^2$ at a value much smaller than 1. For default values of DELT and MITOLEN, this means DIFF/NSUBSTEPS should not exceed $\sim100$.
   \end{itemize}
 %
 \item {\it PRODRATE}
@@ -455,7 +461,7 @@ Floating point numbers can be formated as $1.0$, $1.1D0$, $10e-1$, $-1.0E+01$, e
 \item {\it NUMTRIGGERUNITS}
   \begin{itemize}
     \item  value: 1 integer ; default: $0$
-    \item The number of edges at which diffusing particles should be produced.
+    \item The number of edges at which diffusing particles should be produced or initialized for each species.
   \end{itemize}
 %
 \item {\it UNIQUETRIGGERS}
@@ -468,6 +474,12 @@ Floating point numbers can be formated as $1.0$, $1.1D0$, $10e-1$, $-1.0E+01$, e
   \begin{itemize}
     \item  value: 1 logical; default false
     \item Whether to hold the concentration of the set of producing edges at a fixed value of 1.
+  \end{itemize}
+%
+\item {\it SEEDCONCS}
+  \begin{itemize}
+    \item  value: 1 logical; default false
+    \item Whether to initially set the trigger units to concentration 1. This can be used with FIXEDGES set to false to simulate the dilution of some initial quantity of material.
   \end{itemize}
 
 \end{itemize}

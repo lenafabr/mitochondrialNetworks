@@ -13,10 +13,10 @@ MODULE KEYS
   INTEGER, PARAMETER :: MAXDEG = 4 ! max allowed node degree
   INTEGER, PARAMETER :: MAXSPECIES = 9 ! maximum number of diffusing species
   INTEGER :: MAXNNODE,MAXNEDGE,NSPECIES
+  LOGICAL :: SEEDCONCS
   ! network dimension
   INTEGER :: DIM
-  ! for each bond, ESTR: stretch energy prefactor, LS: ground-state length
-  ! LP: persistence length (bend resistance)
+  ! for each bond, ESTR: stretch energy prefactor, MITOLEN: ground-state length
   DOUBLE PRECISION :: MITOLEN, ESTR
   ! confinement (radius, prefactor)
   DOUBLE PRECISION :: CELLRAD1, ECONF

@@ -313,7 +313,7 @@ CONTAINS
           OLDCONC = NETP%CONC
           DO EC = 1,NETP%NEDGE
              IF(.NOT.NETP%EDGEACT(EC)) CYCLE
-             NETP%CONC(EC,:) = NETP%CONC(EC,:)*(1-NETP%DECAYRATE*DELT) ! decay rate must not go above 1/delt
+             NETP%CONC(EC,:) = NETP%CONC(EC,:)*EXP(-NETP%DECAYRATE*DELT) ! decay rate should be much smaller than 1/delt
           ENDDO
           DO SC = 1,NETP%NSPECIES
              DO PC = 1,NETP%NUMTRIGGERUNITS
@@ -323,7 +323,7 @@ CONTAINS
        ELSE
           DO EC = 1,NETP%NEDGE
              IF(.NOT.NETP%EDGEACT(EC)) CYCLE
-             NETP%CONC(EC,:) = NETP%CONC(EC,:)*(1-NETP%DECAYRATE*DELT) ! decay rate must not go above 1/delt
+             NETP%CONC(EC,:) = NETP%CONC(EC,:)*EXP(-NETP%DECAYRATE*DELT) ! decay rate should be much smaller than 1/delt
           ENDDO     
        ENDIF
     ENDIF
