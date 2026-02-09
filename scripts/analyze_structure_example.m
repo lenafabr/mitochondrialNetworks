@@ -8,7 +8,7 @@
 
 %% file location parameters
 mitochondrialNetworksPath = '../'; % replace this with the path to mitochondrialNetworks on your computer
-simloc = mitochondrialNetworksPath+"param_files/";
+simloc = mitochondrialNetworksPath+"param_files/structure_example/";
 snaploc = simloc+"example_";
 ffloc = simloc+"example_";
 

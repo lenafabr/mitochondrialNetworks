@@ -63,17 +63,29 @@ values, so you need only specify keywords and values when you want to
 change something from the default.
 
 
-\section{Example for a Quick Start}
-\subsection{Example 1}
+\section{Examples for a Quick Start}
+\subsection{Example 1 -- network structure}
 
-A set of example parameter files (\verb=param.example_0_0_j=) are provided in the \verb=param_files= folder. Each parameter file will run a dynamic network simulation with 250 edges for $2\text{x}10^6$ simulation time steps and a different value of the fusion rate. To run the examples, navigate to the \verb=param_files= directory and run each example with
+A set of example parameter files (\verb=param.example_0_0_j=) are provided in the \verb=param_files/= \verb=structure_example= folder. Each parameter file will run a dynamic network simulation with 250 edges for $2\text{x}10^6$ simulation time steps and a different value of the fusion rate. To run the examples, navigate to the \verb=param_files/structure_example= directory and run each example with
 \begin{verbatim}
-../dynnetwork.exe example_0_0_j > stdout.example_0_0_j
+../../dynnetwork.exe example_0_0_j > stdout.example_0_0_j
 \end{verbatim}
 
-If your machine has multiple processors, the simulations can be run in parallel. Snapshots of the network structure will be written to the file (\verb=example_0_0_j.snap.out=) every 1000 simulation steps. Each fusion and fission event will be recorded in the file (\verb=example_0_0_j.ffevents.out=). Use the script \verb=checkexample.m= (in the scripts folder) to visualize a given network structure over time, and the resulting plot of $\hat{\rho}C_2$ once all 10 simulations are finished. To run this script successfully, you must also add \verb=github.com/lenafabr/networktools/NetworkObj.m= to your path. The resulting visualizations should look something like this:
+If your machine has multiple processors, the simulations can be run in parallel. Snapshots of the network structure will be written to the file (\verb=example_0_0_j.snap.out=) every 1000 simulation steps. Each fusion and fission event will be recorded in the file (\verb=example_0_0_j.ffevents.out=). Use the script \verb=analyze_structure_example.m= (in the scripts folder) to visualize a given network structure over time, and the resulting plot of $\hat{\rho}C_2$ once all 10 simulations are finished. To run this script successfully, you must also add \verb=github.com/lenafabr/networktools/NetworkObj.m= to your path. The resulting visualizations should look something like this:
 
-\centerline{\includegraphics[width=0.9\textwidth]{example_panel.pdf}}
+\centerline{\includegraphics[width=0.9\textwidth]{structure_example_panel.pdf}}
+
+
+\subsection{Example 2 -- transport on a dynamic network}
+
+A second set of example parameter files (\verb=param.constconc_0_0_j=) are provided in the \verb=param_files/= \verb=transport_example= folder. Each parameter file will run a dynamic network simulation with 250 edges for $3\text{x}10^6-18\text{x}10^6$ simulation time steps and a different value of the decay rate. To run the examples, navigate to the \verb=param_files/transport_example= directory and run each example with
+\begin{verbatim}
+../../dynnetwork.exe constconc_0_0_j > stdout.constconc_0_0_j
+\end{verbatim}
+
+If your machine has multiple processors, the simulations can be run in parallel. Snapshots of the network structure will be written to the file (\verb=constconc_0_0_j.snap.out=). Each fusion and fission event will be recorded in the file (\verb=constconc_0_0_j.ffevents.out=). Use the script \verb=analyze_transport_example.m= (in the scripts folder) to visualize the spread of material over time and the eventual plot of $S$ (steady-state content) vs decay rate once all simulations are finished. To run this script successfully, you must also add \verb=github.com/lenafabr/= \verb=networktools/NetworkObj.m= to your path. The resulting visualizations should look something like this:
+
+\centerline{\includegraphics[width=0.9\textwidth]{transport_example_panel.pdf}}
 
 % ---------------------------------------------------------
 
