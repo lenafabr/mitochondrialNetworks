@@ -73,7 +73,7 @@ function [rg, x1, x2] = get_radius_gyration_single(NT,PERCLUSTER,rs,mitolen,use_
             nx1 = sum(degs==1);
             if use_edge_lengths
                 nxg2 = sum(degs(degs>2));
-                nx2 = sum(edgelens)/mitolen - 0.5*(nx1+nxg2);
+                nx2 = sz/mitolen - 0.5*(nx1+nxg2);
             else
                 nx2 = sum(degs==2);
             end
