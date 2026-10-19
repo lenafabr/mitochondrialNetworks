@@ -123,6 +123,7 @@ SUBROUTINE READKEY
   REMODELINGFILE = '*.ffevents.out' ! fiss/fuse events file
   APPENDSNAPSHOTS = .FALSE. ! append snapshots to file rather than replacing
   PRINTEVERY = 1 ! how often to print output (to screen and OUTFILE)
+  DUMPFFEVENTSINTERVAL = 0 ! how often to dump fission/fusion events to file
   STARTSNAPSTEP =1 ! start saving snapshots at and beyond this step
   STARTDIFFSTEP = 1 ! start propagating diffusion at and beyond this step
 
@@ -363,6 +364,8 @@ SUBROUTINE READKEY
            CALL READA(REMODELINGFILE)
         CASE('SNAPSHOTEVERY')
            CALL READI(SNAPSHOTEVERY)
+        CASE('DUMPFFEVENTSINTERVAL')
+           CALL READI(DUMPFFEVENTSINTERVAL)
         CASE('APPENDSNAPSHOTS')
            CALL READO(APPENDSNAPSHOTS)
         CASE('STARTDIFFSTEP')
@@ -421,6 +424,10 @@ SUBROUTINE READKEY
      PRINT*,"Must use base grid in order to use edge and/or node grids"
      STOP 1
   ENDIF
+  IF (DUMPFFEVENTSINTERVAL.LT.1) THEN
+     PRINT*,"DUMPFFEVENTSINTERVAL must be >= 1, setting equal to SNAPSHOTEVERY"
+     DUMPFFEVENTSINTERVAL = SNAPSHOTEVERY
+  ENDIF
 
   ! ----------- fix file names -----------
   CALL REPLACESUBSTR(OUTFILE,'*',TRIM(ADJUSTL(ARG)))
@@ -455,6 +462,7 @@ SUBROUTINE READKEY
   print*, 'ACTION: ', TRIM(ADJUSTL(ACTION))
   print*, 'Output file: ', TRIM(OUTFILE)
   PRINT*, 'Dumping snapshot every', SNAPSHOTEVERY,'steps. In file:', TRIM(ADJUSTL(SNAPSHOTFILE))
+  PRINT*, 'Dumping fission/fusion events every', DUMPFFEVENTSINTERVAL,'steps. In file:', TRIM(ADJUSTL(REMODELINGFILE))
 
   print*, 'Max allowed number of nodes and edges:', MAXNNODE,MAXNEDGE
   PRINT*,"confined to sphere of size, conf strength",CELLRAD1,ECONF
