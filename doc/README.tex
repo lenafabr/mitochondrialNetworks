@@ -347,6 +347,19 @@ Floating point numbers can be formated as $1.0$, $1.1D0$, $10e-1$, $-1.0E+01$, e
     \item Input file used to build the planes defining the confining boundary of the network. NPLANE must match the number of planes specified in the file
     \item Any * in the file name will be replaced by the command-line argument (suffix)
   \end{itemize}
+
+\item {\it USECIRCLEBOUND}
+  \begin{itemize}
+    \item value: 1 logical; default: false
+    \item Whether to use a bounding cylinder rather than a bounding sphere. The cylindrical axis will be defined by FACEVECTOR. Requires additional planar boundaries to keep the system fully bounded.
+  \end{itemize}
+
+\item {\it FACEVECTOR}
+  \begin{itemize}
+    \item value: 3 floats; default: 0D0 0D0 1D0
+    \item A vector defining the axis of the cylindrical boundary.
+  \end{itemize}
+
 \end{itemize}
 
 \subsubsection*{Outputting Data}

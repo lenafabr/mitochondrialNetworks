@@ -10,4 +10,5 @@
 *.log
 *.synctex.gz
 *.asv
-
+*.DS_Store
+*stdout.*
