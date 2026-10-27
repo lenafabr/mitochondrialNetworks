@@ -11,7 +11,8 @@ MODULE KEYS
   ! mito network geometry, mechanics, diffusive spread/transport
   ! ---------------------
   INTEGER, PARAMETER :: MAXDEG = 4 ! max allowed node degree
-  INTEGER, PARAMETER :: MAXSPECIES = 9 ! maximum number of diffusing species
+  INTEGER, PARAMETER :: MAXSPECIES = 25 ! maximum number of diffusing species
+  INTEGER, PARAMETER :: MAXDIM = 3
   INTEGER :: MAXNNODE,MAXNEDGE,NSPECIES
   LOGICAL :: SEEDCONCS
   ! network dimension
@@ -22,6 +23,9 @@ MODULE KEYS
   DOUBLE PRECISION :: CELLRAD1, ECONF
   ! number of planes if confining using planes
   INTEGER :: NPLANE
+  ! cylindrical confinement (T/F, unit vector along cylinder axis)
+  LOGICAL :: USECIRCLEBOUND
+  DOUBLE PRECISION :: FACEVECTOR(MAXDIM)
   ! Bending params: THETA0 = desired bending angle for degree 3 intersections
   ! BENDMOD1,2 = Bending energy prefactors for degree 2,3 nodes
   DOUBLE PRECISION :: THETA0, BENDMOD1, BENDMOD2

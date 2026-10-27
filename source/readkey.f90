@@ -53,6 +53,11 @@ SUBROUTINE READKEY
   BENDMOD1 = 2D0
   BENDMOD2 = 6D0
 
+  ! alternate bounding options
+  NPLANE = 0 ! number of planes to use for confinement
+  USECIRCLEBOUND = .FALSE. ! use cylindrical confinement?
+  FACEVECTOR = (/ 0D0, 0D0, 1D0 /) ! cylindrical axis unit vector
+
   ! steric parameters
   STERICMOD = 1D4
   STERICRAD = 1D-1
@@ -93,7 +98,6 @@ SUBROUTINE READKEY
   USEOUTOFPLANE = .FALSE.
   BENDMODPLANE = 0.6
   ALPHAPLANE = 1.2D0
-
   
   ! max number of nodes and edges
   MAXNNODE = 500
@@ -202,6 +206,19 @@ SUBROUTINE READKEY
            IF (NITEMS.GT.2) CALL READF(ECONF)
         CASE('ECONF')
            CALL READF(ECONF)
+        CASE('NPLANE')
+           CALL READI(NPLANE)
+        CASE('USECIRCLEBOUND')
+           CALL READO(USECIRCLEBOUND)
+        CASE('FACEVECTOR')
+           IF(NITEMS.EQ.4) THEN
+              DO SC = 1,NITEMS-1
+                 CALL READF(FACEVECTOR(SC))
+              ENDDO
+           ELSE
+              PRINT*,"ERROR: FACEVECTOR must have exactly 3 components. Using default (0,0,1)."
+           ENDIF
+           FACEVECTOR = FACEVECTOR/SQRT(DOT_PRODUCT(FACEVECTOR,FACEVECTOR))
         CASE('DELT')
            CALL READF(DELT)
         CASE('DIM')
@@ -428,6 +445,10 @@ SUBROUTINE READKEY
      PRINT*,"DUMPFFEVENTSINTERVAL must be >= 1, setting equal to SNAPSHOTEVERY"
      DUMPFFEVENTSINTERVAL = SNAPSHOTEVERY
   ENDIF
+  IF (USECIRCLEBOUND.AND.NPLANE.LE.0) THEN
+     PRINT*,"USECIRCLEBOUND requires two planar boundaries to be defined. Please add a .pl file to define appropriate boundaries."
+     STOP 1
+  ENDIF
 
   ! ----------- fix file names -----------
   CALL REPLACESUBSTR(OUTFILE,'*',TRIM(ADJUSTL(ARG)))
@@ -466,6 +487,8 @@ SUBROUTINE READKEY
 
   print*, 'Max allowed number of nodes and edges:', MAXNNODE,MAXNEDGE
   PRINT*,"confined to sphere of size, conf strength",CELLRAD1,ECONF
+  IF (USECIRCLEBOUND) PRINT*, 'using a 2d bound with face vector:',FACEVECTOR
+
   print*, 'MITOLEN, ESTR, BENDMOD1, BENDMOD2, THETA0:', MITOLEN, ESTR, BENDMOD1, BENDMOD2, THETA0
   PRINT*,"use out-of-plane bending penalty?, Bending modulus",USEOUTOFPLANE,BENDMODPLANE
   print*, 'STERICMOD, STERIC RADIUS:', STERICMOD, STERICRAD
