@@ -51,7 +51,7 @@ CONTAINS
     DOUBLE PRECISION, DIMENSION(NETP%DIM,NETP%NNODE*(DP%SNAPSHOTEVERY+1)) :: EVENTLOCS
     DOUBLE PRECISION, DIMENSION(4,NETP%NNODE*(DP%SNAPSHOTEVERY+1)) :: EVENTRATES
     DOUBLE PRECISION :: NODEVALS(NETP%NNODE,1)
-    LOGICAL :: DIDFISS, CLOSENUFF, ALLOWFUSE
+    LOGICAL :: DIDFISS, ALLOWFUSE
     DOUBLE PRECISION :: FISSPROB2, FISSPROB3, RECHARGEPROB
     DOUBLE PRECISION :: YEASTOFFPROB, YEASTONPROB
     LOGICAL :: FOUND, CANFUSENOW(NETP%NNODE), FISSABLENODE(NETP%NNODE)
@@ -61,6 +61,7 @@ CONTAINS
     & GRIDNODES(NETP%NNODE+1,PRODUCT(NETP%GRIDSPACES))
     DOUBLE PRECISION :: MINPOS(NETP%DIM), MAXPOS(NETP%DIM), SHIFTED(NETP%DIM), PARTSZ(NETP%DIM), DELTA
     INTEGER :: SUBSTEP
+    LOGICAL :: LASERSTATE 
 
     EVENTRATES = 0D0
     
@@ -73,7 +74,7 @@ CONTAINS
 
     TOP = 0; EVENTS = 0; EVENTLOCS = 0D0
 
-    NEIGHBS1 = 0D0; NEIGHBS2 = 0D0; CLOSENUFF = .FALSE.; ALLOWFUSE = .FALSE.
+    NEIGHBS1 = 0D0; NEIGHBS2 = 0D0; ALLOWFUSE = .FALSE.; LASERSTATE = .TRUE.
 
     ! Initial snapshot
     INFO = 0D0
@@ -142,10 +143,20 @@ CONTAINS
 
        !if there are diffusing species, propagate them along the network
        IF(NETP%NSPECIES.GT.0.AND.STEP.GE.DP%STARTDIFFSTEP) THEN
+          ! decide whether the laser should be on or off based on the current time and the laser on/off times
+
+          ! TODO: set LASERSTATE to true or false. It should be on for LASERONTIME and off for LASEROFFTIME, repeating this
+          ! cycle until the end of the simulation. Bonus if you can make it so that the first laser on/off cycle is anchored
+          ! to STARTDIFFSTEP rather than t=0. But be careful because STARTDIFFSTEP is measured in steps, not time. 
+          ! So you will need to convert it to time by multiplying by DELT. This can be done as a somewhat complicated one-liner or 
+          ! you can define a new variable to hold the current time within the laser cycle, then use that to determine LASERSTATE.
+          ! Finally, only modify LASERSTATE if LASERONTIME and LASEROFFTIME are both greater than zero, otherwise we should assume
+          ! that the laser is always on. So the preceding line(s) should be wrapped in an IF () THEN ... ENDIF statement.
+
           ! take additional timesteps to ensure convergence of FVM solution for diffusion on the edges
           DO SUBSTEP = 1,DP%NSUBSTEPS
-             CALL DIFFUSEONEDGES(NETP,DELT/DP%NSUBSTEPS,SPECIESPRODUCER)
-             CALL PRODUCEANDDECAYSPECIES(NETP,DELT/DP%NSUBSTEPS,SPECIESPRODUCER)
+             CALL DIFFUSEONEDGES(NETP,DELT/DP%NSUBSTEPS,SPECIESPRODUCER,LASERSTATE)
+             CALL PRODUCEANDDECAYSPECIES(NETP,DELT/DP%NSUBSTEPS,SPECIESPRODUCER,LASERSTATE)
           ENDDO
        ENDIF
 

@@ -57,6 +57,8 @@ SUBROUTINE READKEY
   NPLANE = 0 ! number of planes to use for confinement
   USECIRCLEBOUND = .FALSE. ! use cylindrical confinement?
   FACEVECTOR = (/ 0D0, 0D0, 1D0 /) ! cylindrical axis unit vector
+  LASERONTIME = -1D0
+  LASEROFFTIME = -1D0
 
   ! steric parameters
   STERICMOD = 1D4
@@ -219,6 +221,10 @@ SUBROUTINE READKEY
               PRINT*,"ERROR: FACEVECTOR must have exactly 3 components. Using default (0,0,1)."
            ENDIF
            FACEVECTOR = FACEVECTOR/SQRT(DOT_PRODUCT(FACEVECTOR,FACEVECTOR))
+        CASE('LASERONTIME')
+           CALL READF(LASERONTIME)
+        CASE('LASEROFFTIME')
+           CALL READF(LASEROFFTIME)
         CASE('DELT')
            CALL READF(DELT)
         CASE('DIM')
@@ -402,6 +408,15 @@ SUBROUTINE READKEY
   ! -----------------
   ! check validity of some values, raise errors or adjust as necessary
   ! -----------------
+  IF (LASERONTIME*LASEROFFTIME.LT.0D0) THEN
+     PRINT*, 'ERROR IN LASERONTIME/LASEROFFTIME: values must have the same sign', &
+          LASERONTIME, LASEROFFTIME
+     STOP 1
+  ENDIF
+  IF (LASERONTIME.GT.0D0 .AND. LASEROFFTIME.GT.0D0) THEN
+     PRINT*, 'LASERONTIME, LASEROFFTIME have been set to', LASERONTIME, LASEROFFTIME, ' values'
+  ENDIF
+
   IF(NSPECIES.GT.MAXSPECIES) THEN
      PRINT*,'TOO MANY SPECIES. MAX IS 9', NSPECIES
      STOP 1

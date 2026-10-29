@@ -63,6 +63,8 @@ MODULE KEYS
   LOGICAL :: FIXEDGES
   ! whether to use a unique edge to produce the signal for each species
   LOGICAL :: UNIQUETRIGGERS
+  ! laser on and off times for holding constant concentration
+  DOUBLE PRECISION :: LASERONTIME, LASEROFFTIME
 
 
   ! ------------------
