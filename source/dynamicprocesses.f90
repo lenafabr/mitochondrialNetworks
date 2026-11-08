@@ -268,7 +268,7 @@ CONTAINS
      NETP%CONC = NETP%CONC + FLUXINTOEDGE*DELT
      ! if some edges should be held at constant concentration, reset them to their original values
      ! TODO: make this also dependent on the laser state, very small change to next line only
-     IF(NETP%FIXEDGES) THEN
+     IF(NETP%FIXEDGES.AND.LASERSTATE) THEN
         DO SC = 1,NETP%NSPECIES
            DO PC = 1,NETP%NUMTRIGGERUNITS
               E1 = SPECIESPRODUCER(SC,PC)
@@ -313,7 +313,7 @@ CONTAINS
 
     IF(ANY(NETP%DECAYRATE.GT.0D0)) THEN
        ! TODO: make this also dependent on the laser state. Very small change to next line only
-       IF(NETP%FIXEDGES) THEN
+       IF(NETP%FIXEDGES.AND.LASERSTATE) THEN
           OLDCONC = NETP%CONC
           DO EC = 1,NETP%NEDGE
              IF(.NOT.NETP%EDGEACT(EC)) CYCLE
