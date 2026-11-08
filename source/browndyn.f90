@@ -62,6 +62,7 @@ CONTAINS
     DOUBLE PRECISION :: MINPOS(NETP%DIM), MAXPOS(NETP%DIM), SHIFTED(NETP%DIM), PARTSZ(NETP%DIM), DELTA
     INTEGER :: SUBSTEP
     LOGICAL :: LASERSTATE 
+    DOUBLE PRECISION :: LASERCYCLETIME
 
     EVENTRATES = 0D0
     
@@ -144,7 +145,10 @@ CONTAINS
        !if there are diffusing species, propagate them along the network
        IF(NETP%NSPECIES.GT.0.AND.STEP.GE.DP%STARTDIFFSTEP) THEN
           ! decide whether the laser should be on or off based on the current time and the laser on/off times
-
+         IF(NETP%LASERONTIME.GT.0D0.AND.NETP%LASEROFFTIME.GT.0D0) THEN
+            LASERCYCLETIME = MOD(CURTIME - DP%STARTDIFFSTEP*DELT, NETP%LASERONTIME + NETP%LASEROFFTIME)
+            LASERSTATE = (LASERCYCLETIME.LT.NETP%LASERONTIME)
+         ENDIF
           ! TODO: set LASERSTATE to true or false. It should be on for LASERONTIME and off for LASEROFFTIME, repeating this
           ! cycle until the end of the simulation. Bonus if you can make it so that the first laser on/off cycle is anchored
           ! to STARTDIFFSTEP rather than t=0. But be careful because STARTDIFFSTEP is measured in steps, not time. 
